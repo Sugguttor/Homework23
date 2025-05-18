@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,8 +23,8 @@ public class StorageService {
     private final Map<UUID, Article> articles;
 
     public StorageService(Map<UUID, Product> products, Map<UUID, Article> articles) {
-        this.products = products;
-        this.articles = articles;
+        this.products = new HashMap<>();
+        this.articles = new HashMap<>();
         createTestData();
     }
 
@@ -71,7 +72,7 @@ public class StorageService {
         this.articles.put(article3.getId(), article3);
     }
 
-    @GetMapping("/searchable")
+
     public Collection<Searchable> getAllSearchable() {
         return Stream.concat(products.values().stream(),articles.values().stream()).collect(Collectors.toList());
     }
