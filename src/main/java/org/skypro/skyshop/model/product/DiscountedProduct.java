@@ -3,9 +3,9 @@ package org.skypro.skyshop.model.product;
 import java.util.UUID;
 
 public class DiscountedProduct extends Product {
-    public double basicPrice;
-    public int discount;
-    private final UUID id;
+    private double basicPrice;
+    private int discount;
+
 
     public DiscountedProduct(String name, double basicPrice, int discount, UUID id) {
         super(name, id);
@@ -17,7 +17,6 @@ public class DiscountedProduct extends Product {
         if (discount < 0 || discount > 100) {
             throw new IllegalArgumentException("Скидка задана некорректно!");
         }
-       this.id = id;
     }
 
     @Override
@@ -27,11 +26,6 @@ public class DiscountedProduct extends Product {
             price = basicPrice * (1 - ((double) discount / 100));
         }
         return price;
-    }
-
-    @Override
-    public UUID getId() {
-        return id;
     }
 
     @Override
