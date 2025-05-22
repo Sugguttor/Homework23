@@ -9,20 +9,17 @@ import org.skypro.skyshop.model.search.Searchable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class StorageService {
 
-    private final Map<UUID, Product> products;
+    private static Map<UUID, Product> products;
     private final Map<UUID, Article> articles;
 
-    public StorageService(Map<UUID, Product> products, Map<UUID, Article> articles) {
+    public StorageService() {
         this.products = new HashMap<>();
         this.articles = new HashMap<>();
         createTestData();
@@ -75,6 +72,10 @@ public class StorageService {
 
     public Collection<Searchable> getAllSearchable() {
         return Stream.concat(products.values().stream(),articles.values().stream()).collect(Collectors.toList());
+    }
+
+    public static Optional<Product> getProductById(UUID id) {
+        return Optional.ofNullable(products.get(id));
     }
 
 }
