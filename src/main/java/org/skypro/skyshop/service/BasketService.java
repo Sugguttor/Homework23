@@ -3,6 +3,7 @@ package org.skypro.skyshop.service;
 import org.skypro.skyshop.model.basket.BasketItem;
 import org.skypro.skyshop.model.basket.ProductBasket;
 import org.skypro.skyshop.model.basket.UserBasket;
+import org.skypro.skyshop.model.exeptions.NoSuchProductException;
 import org.skypro.skyshop.model.product.Product;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +21,19 @@ public class BasketService {
     }
 
     public void addProductById(UUID id) {
-        Optional<Product> productOptional = StorageService.getProductById(id);
+        Product productOptional = StorageService.getProductById(id);
 
-        if (productOptional.isPresent()) {
+        if (productOptional != null) {
             productBasket.addProduct(id);
         } else {
-            throw new IllegalArgumentException("Product not found");
+            throw new NoSuchProductException("Product not found");
         }
     }
 
     public UserBasket getUserBasket() {
         Map<UUID, Integer> basketMap = productBasket.getBasket();
         List<BasketItem> basketItemList = basketMap.entrySet().stream()
-                .map(map -> new BasketItem(storageService.getProductById(map.getKey()).orElseThrow(), map.getValue()))
+                .map(map -> new BasketItem(storageService.getProductById(map.getKey()), map.getValue()))
                 .collect(Collectors.toCollection(() -> new ArrayList<BasketItem>()));
         double total = basketItemList.stream()
                 .mapToDouble(price -> price.getQuantity() * price.getProduct().getPrice())
