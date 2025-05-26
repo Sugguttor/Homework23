@@ -21,13 +21,8 @@ public class BasketService {
     }
 
     public void addProductById(UUID id) {
-        Product productOptional = StorageService.getProductById(id);
-
-        if (productOptional != null) {
-            productBasket.addProduct(id);
-        } else {
-            throw new NoSuchProductException("Product not found");
-        }
+        Product product =  storageService.getProductById(id);
+        productBasket.addProduct(id);
     }
 
     public UserBasket getUserBasket() {

@@ -74,7 +74,7 @@ public class StorageService {
         return Stream.concat(products.values().stream(),articles.values().stream()).collect(Collectors.toList());
     }
 
-    public static Product getProductById(UUID id) {
+    public Product getProductById(UUID id) {
         return Optional.ofNullable(products.get(id))
                 .orElseThrow(() -> new NoSuchProductException("Product not found for id " + id));
     }
