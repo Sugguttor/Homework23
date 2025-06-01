@@ -1,13 +1,13 @@
 package org.skypro.skyshop.service;
 
 import org.skypro.skyshop.model.article.Article;
+import org.skypro.skyshop.model.exeptions.NoSuchProductException;
 import org.skypro.skyshop.model.product.DiscountedProduct;
 import org.skypro.skyshop.model.product.FixPriceProduct;
 import org.skypro.skyshop.model.product.Product;
 import org.skypro.skyshop.model.product.SimpleProduct;
 import org.skypro.skyshop.model.search.Searchable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -74,8 +74,9 @@ public class StorageService {
         return Stream.concat(products.values().stream(),articles.values().stream()).collect(Collectors.toList());
     }
 
-    public static Optional<Product> getProductById(UUID id) {
-        return Optional.ofNullable(products.get(id));
+    public Product getProductById(UUID id) {
+        return Optional.ofNullable(products.get(id))
+                .orElseThrow(() -> new NoSuchProductException("Product not found for id " + id));
     }
 
 }
